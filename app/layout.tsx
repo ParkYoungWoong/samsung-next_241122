@@ -1,5 +1,4 @@
 import './globals.css'
-import Header from '@/components/Header'
 
 export default function RootLayout({
   children
@@ -8,10 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`antialiased`}>
-        <Header />
-        {children}
-      </body>
+      <body className={`antialiased`}>{children}</body>
     </html>
   )
 }

@@ -31,20 +31,32 @@ export interface Rating {
 }
 
 export default async function MovieDetailsPage({
-  params
+  params,
+  searchParams
 }: {
   params: Promise<{ movieId: string }>
+  searchParams: Promise<Partial<{ a: string; b: string }>>
 }) {
   const { movieId } = await params
-  await new Promise(resolve => setTimeout(resolve, 3000))
-  const res = await fetch(`https://omdbapi.com/?apikey=7035c60c&i=${movieId}`)
-  const movie: MovieDetails = await res.json()
+  const { a, b } = await searchParams
+  await new Promise(resolve => setTimeout(resolve, 500))
+  let movie: MovieDetails | null = null
+  try {
+    const res = await fetch(`https://omdbapi.co/?apikey=7035c60c&i=${movieId}`)
+    movie = await res.json()
+  } catch (err) {
+    console.log(err)
+    throw new Error('주소가 잘못되었어요!')
+  }
+
   return (
     <>
       <h1>Movie Details Page!</h1>
-      <h2>{movieId}</h2>
-      <h2>{movie.Title}</h2>
-      <h2>{movie.Plot}</h2>
+      <h2>
+        {movieId} / {a} / {b}
+      </h2>
+      <h2>{movie?.Title}</h2>
+      <h2>{movie?.Plot}</h2>
     </>
   )
 }
